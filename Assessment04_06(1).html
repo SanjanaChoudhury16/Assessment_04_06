@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 40px;
+    }
+
+    form {
+      display: inline-block;
+      text-align: left;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: inline-block;
+      width: 80px;
+    }
+
+    input, textarea {
+      border: 1px solid #ccc;
+      padding: 5px;
+      width: 250px;
+    }
+
+    input.error, textarea.error {
+      border: 2px solid red;
+    }
+
+    .error-message {
+      color: red;
+      margin-left: 10px;
+      font-size: 14px;
+      display: inline-block;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 5px 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Registration Form</h2>
+  <form id="registrationForm" novalidate>
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name">
+      <span class="error-message" id="nameError"></span>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email">
+      <span class="error-message" id="emailError"></span>
+    </div>
+    <div class="form-group">
+      <label for="website">Website:</label>
+      <input type="url" id="website">
+      <span class="error-message" id="websiteError"></span>
+    </div>
+    <div class="form-group">
+      <label for="message">Message:</label>
+      <textarea id="message" rows="4"></textarea>
+      <span class="error-message" id="messageError"></span>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+      document.querySelectorAll('input, textarea').forEach(el => el.classList.remove('error'));
+
+      let isValid = true;
+
+      const name = document.getElementById('name');
+      const email = document.getElementById('email');
+      const website = document.getElementById('website');
+      const message = document.getElementById('message');
+
+      if (name.value.trim() === '') {
+        document.getElementById('nameError').textContent = 'This field is required';
+        name.classList.add('error');
+        isValid = false;
+      }
+
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (email.value.trim() === '') {
+        document.getElementById('emailError').textContent = 'This field is required';
+        email.classList.add('error');
+        isValid = false;
+      } else if (!emailPattern.test(email.value.trim())) {
+        document.getElementById('emailError').textContent = 'A valid email address is required';
+        email.classList.add('error');
+        isValid = false;
+      }
+
+      try {
+        new URL(website.value.trim());
+      } catch {
+        document.getElementById('websiteError').textContent = 'A valid url is required';
+        website.classList.add('error');
+        isValid = false;
+      }
+
+      if (message.value.trim() === '') {
+        document.getElementById('messageError').textContent = 'This field is required';
+        message.classList.add('error');
+        isValid = false;
+      }
+
+      if (isValid) {
+        alert('Form submitted successfully!');
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
